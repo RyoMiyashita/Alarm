@@ -1,18 +1,6 @@
 import RPi.GPIO as GPIO
 
 class SevenSegment :
-    sevenSegmentsGPIO = [2, 3, 4, 14]
-    numGPIO = {
-        "A" : 24,
-        "B" : 25,
-        "C" : 23,
-        "D" : 17,
-        "E" : 18,
-        "F" : 22,
-        "G" : 10,
-        "DP" : 27,
-    }
-
     def __init__(self) :
         self.sevenSegmentsGPIO = [2, 3, 4, 14]
         self.numGPIO = {
