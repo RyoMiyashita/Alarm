@@ -1,8 +1,10 @@
 import RPi.GPIO as GPIO
+from time import sleep
 
 class SevenSegment :
     def __init__(self) :
         self.sevenSegmentsGPIO = [2, 3, 4, 14]
+        self.colGPIO = 15
         self.numGPIO = {
             "A" : 24,
             "B" : 25,
@@ -15,15 +17,17 @@ class SevenSegment :
         }
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.sevenSegmentsGPIO, GPIO.OUT)
+        GPIO.setup(self.colGPIO, GPIO.OUT)
         GPIO.setup(list(self.numGPIO.values()), GPIO.OUT)
 
 
-    def aDispNum(self, ch = 0, num = 0) :
+    def aDispNum(self, ch = 0, num = 0, colDisp = False) :
         if ch > 3 :
             ch = 0
 
         for seg in self.sevenSegmentsGPIO :
             GPIO.output(seg, 0)
+        GPIO.output(self.colGPIO, 0)
 
         GPIO.output(self.sevenSegmentsGPIO[ch], 1)
         GPIO.output(list(self.numGPIO.values()), 1)
@@ -70,3 +74,26 @@ class SevenSegment :
 
         else :
             GPIO.output(self.numGPIO["DP"], 0)
+
+    def dispCol (self, colDisp):
+        for seg in self.sevenSegmentsGPIO :
+            GPIO.output(seg, 0)
+        GPIO.output(list(self.numGPIO.values()), 1)
+        GPIO.output(self.colGPIO, 0)
+
+        if colDisp:
+            GPIO.output(self.colGPIO, 1)
+            GPIO.output(self.numGPIO["A"], 0)
+            GPIO.output(self.numGPIO["B"], 0)
+
+    def disp4Num (self, num1 = 0, num2 = 0, num3 = 0, num4 = 0, colDisp = True) :
+        self.aDispNum(0, num1 % 10)
+        sleep(0.001)
+        self.aDispNum(1, num2 % 10)
+        sleep(0.001)
+        self.aDispNum(2, num3 % 10)
+        sleep(0.001)
+        self.aDispNum(3, num4 % 10)
+        sleep(0.001)
+        self.dispCol(colDisp)
+        sleep(0.001)
