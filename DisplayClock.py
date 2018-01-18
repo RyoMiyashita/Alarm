@@ -5,10 +5,6 @@ import SevenSegment
 
 SevenSegmentClass = SevenSegment.SevenSegment()
 
-hour = datetime.now().hour
-minute = datetime.now().minute
-microsecond = datetime.now().microsecond
-
 try:
     while 1:
         now = datetime.now()
