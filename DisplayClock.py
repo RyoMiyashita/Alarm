@@ -1,13 +1,16 @@
 import RPi.GPIO as GPIO
 from datetime import datetime
+from pytz import timezone
 
 import SevenSegment
 
 SevenSegmentClass = SevenSegment.SevenSegment()
 
+jp = timezone('Asia/Tokyo')
+
 try:
     while 1:
-        now = datetime.now()
+        now = datetime.now(jp)
         hour = now.hour
         minute = now.minute
         microsecond = now.microsecond
