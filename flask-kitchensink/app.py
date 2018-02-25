@@ -41,6 +41,7 @@ from linebot.models import (
     UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent
 )
 
+displayClockPropen = 0
 app = Flask(__name__)
 
 # get channel_secret and channel_access_token from your environment variable
@@ -89,14 +90,29 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
     text = event.message.text
+    global displayClockPropen
 
     if text == 'ON!':
-        subprocess.Popen(['python','../DisplayClock.py'])
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text='点灯したよ'))
+        if displayClockPropen == 0:
+            displayClockPropen = subprocess.Popen(['python3', '../DisplayClock.py'])
+            line_bot_api.reply_message(
+                event.reply_token, TextSendMessage(text='点灯したよ'))
+        else:
+            line_bot_api.reply_message(
+                event.reply_token, TextSendMessage(text='点灯してるよ'))
     elif text == 'OFF!':
+        if displayClockPropen == 0:
+            line_bot_api.reply_message(
+                event.reply_token, TextSendMessage(text='点灯してないよ'))
+        else:
+            subprocess.Popen(['kill ' '-s ' '2 ' '%d'%(displayClockPropen.pid)], shell=True)
+            displayClockPropen = 0
+            line_bot_api.reply_message(
+                event.reply_token, TextSendMessage(text='消灯したよ'))
+    elif text == 'Alarm!':
+        subprocess.Popen('.././alerm.sh', shell=True)
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text='無理だよ'))
+            event.reply_token, TextSendMessage(text='アラーム ON'))
     else:
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=event.message.text))
