@@ -1,4 +1,3 @@
-import RPi.GPIO as GPIO
 from datetime import datetime
 from pytz import timezone
 
@@ -25,6 +24,5 @@ try:
             SevenSegmentClass.disp4Num (num1, num2, num3, num4, False)
 
 except KeyboardInterrupt:
+    SevenSegmentClass.clear7seg()
     pass
-
-GPIO.cleanup()
