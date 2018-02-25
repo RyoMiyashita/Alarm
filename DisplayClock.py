@@ -1,17 +1,15 @@
-import RPi.GPIO as GPIO
 from datetime import datetime
+from pytz import timezone
 
 import SevenSegment
 
 SevenSegmentClass = SevenSegment.SevenSegment()
 
-hour = datetime.now().hour
-minute = datetime.now().minute
-microsecond = datetime.now().microsecond
+jp = timezone('Asia/Tokyo')
 
 try:
     while 1:
-        now = datetime.now()
+        now = datetime.now(jp)
         hour = now.hour
         minute = now.minute
         microsecond = now.microsecond
@@ -26,6 +24,5 @@ try:
             SevenSegmentClass.disp4Num (num1, num2, num3, num4, False)
 
 except KeyboardInterrupt:
+    SevenSegmentClass.clear7seg()
     pass
-
-GPIO.cleanup()

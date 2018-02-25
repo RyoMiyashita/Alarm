@@ -97,3 +97,6 @@ class SevenSegment :
         sleep(0.001)
         self.dispCol(colDisp)
         sleep(0.001)
+
+    def clear7seg (self):
+        GPIO.cleanup()
